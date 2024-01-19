@@ -1,6 +1,8 @@
 package org.polytechtours.javaperformance.tp.paintingants;
 // package PaintingAnts_v2;
 
+import org.openjdk.jmh.annotations.*;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -31,6 +34,11 @@ import java.awt.event.MouseListener;
  * @version 1.0
  */
 
+@BenchmarkMode(Mode.Throughput)
+@Warmup(iterations = 3, time = 1)
+@Measurement(iterations = 5, time = 1)
+@State(Scope.Benchmark)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
 public class CPainting extends Canvas implements MouseListener {
   private static final long serialVersionUID = 1L;
   // matrice servant pour le produit de convolution
@@ -119,6 +127,7 @@ public class CPainting extends Canvas implements MouseListener {
    * Titre : void init() Description : Initialise le fond a la couleur blanche
    * et initialise le tableau des couleurs avec la couleur blanche
    ******************************************************************************/
+  @Benchmark
   public void init() {
     int i, j;
     mGraphics = getGraphics();
@@ -425,4 +434,5 @@ public class CPainting extends Canvas implements MouseListener {
       repaint();
     }
   }
+
 }

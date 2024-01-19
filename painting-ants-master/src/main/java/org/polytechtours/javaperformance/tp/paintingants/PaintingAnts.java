@@ -550,4 +550,6 @@ public class PaintingAnts extends java.applet.Applet implements Runnable {
     lastFps = fpsCounter;
     fpsCounter = 0L;
   }
+
+
 }
