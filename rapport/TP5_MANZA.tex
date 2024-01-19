@@ -183,6 +183,86 @@ La création de matrice n'est vraiment pas optimale. En moyenne, en utilisant le
 
 \includegraphics[scale=0.75]{images/appletSansModification.png}
 
+\includegraphics[scale=0.5]{images/jconsole_sans_modif.png}
+
+\begin{lstlisting}
+    public void init() {
+        int i, j;
+        mGraphics = getGraphics();
+        synchronized (mMutexCouleurs) {
+          mGraphics.clearRect(0, 0, mDimension.width, mDimension.height);
+    
+          // initialisation de la matrice des couleurs
+    
+          for (i = 0; i != mDimension.width; i++) {
+            for (j = 0; j != mDimension.height; j++) {
+              mCouleurs[i][j] = new Color(mCouleurFond.getRed(), mCouleurFond.getGreen(), mCouleurFond.getBlue());
+            }
+          }
+        }
+    
+        /* initialisation de la matrice de convolution : lissage moyen sur 9
+        * 1 1 2 1 1
+        * 1 2 3 2 1
+        * 2 3 4 3 2
+        * 1 2 3 2 1
+        * 1 1 2 1 1
+         */
+        float factorConv9 = 1 / 16f;
+        int multiplier = 1;
+        for(int interatorx = 0 ; interatorx<3; interatorx++)
+        {
+          for(int interatory = 0 ; interatory<3; interatory++)
+          {
+            multiplier =  interatorx == 1 ? multiplier * 2 : multiplier;
+            multiplier =  interatory == 1 ? multiplier * 2 : multiplier;
+    
+            CPainting.mMatriceConv9[interatorx][interatory] = factorConv9 * multiplier;
+    
+            if(multiplier != 1)
+            {
+              multiplier =1;
+            }
+          }
+        }
+    
+        // initialisation de la matrice de convolution : lissage moyen sur 25
+        float factorConv25 = 1 / 44f;
+        for (int iteratorx = 0; iteratorx < 5; iteratorx++) {
+          for (int iteratory = 0; iteratory < 5; iteratory++) {
+            int minDistanceX = Math.min(iteratorx, 4 - iteratorx);
+            int minDistanceY = Math.min(iteratory, 4 - iteratory);
+            int minDistance = Math.min(minDistanceX, minDistanceY);
+            CPainting.mMatriceConv25[iteratorx][iteratory] = factorConv25 * (minDistance + 1);
+          }
+        }
+    
+        // initialisation de la matrice de convolution : lissage moyen sur 49
+        // cases
+        /*
+         * 1 1 2 2 2 1 1
+         * 1 2 3 4 3 2 1
+         * 2 3 4 5 4 3 2
+         * 2 4 5 8 5 4 2
+         * 2 3 4 5 4 3 2
+         * 1 2 3 4 3 2 1
+         * 1 1 2 2 2 1 1
+         */
+        // initialisation de la matrice de convolution : lissage moyen sur 25
+        float factorConv49 = 1 / 128f;
+        for (int iteratorx = 0; iteratorx < 7; iteratorx++) {
+          for (int iteratory = 0; iteratory < 7; iteratory++) {
+            int minDistanceX = Math.min(iteratorx, 6 - iteratorx);
+            int minDistanceY = Math.min(iteratory, 6 - iteratory);
+            int minDistance = Math.min(minDistanceX, minDistanceY);
+            CPainting.mMatriceConv49[iteratorx][iteratory] = factorConv49 * (minDistance + 1);
+          }
+        }
+    
+        mSuspendu = false;
+      }
+\end{lstlisting}
+
 \section{Analyse finale}
 % Your results go here.
 
