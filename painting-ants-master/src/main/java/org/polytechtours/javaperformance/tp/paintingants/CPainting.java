@@ -143,8 +143,13 @@ public class CPainting extends Canvas implements MouseListener {
       }
     }
 
-    // initialisation de la matrice de convolution : lissage moyen sur 9
-    // cases
+    /* initialisation de la matrice de convolution : lissage moyen sur 9
+    * 1 1 2 1 1
+    * 1 2 3 2 1
+    * 2 3 4 3 2
+    * 1 2 3 2 1
+    * 1 1 2 1 1
+     */
     float factorConv9 = 1 / 16f;
     int multiplier = 1;
     for(int interatorx = 0 ; interatorx<3; interatorx++)
@@ -156,52 +161,23 @@ public class CPainting extends Canvas implements MouseListener {
 
         CPainting.mMatriceConv9[interatorx][interatory] = factorConv9 * multiplier;
 
-        multiplier =1;
+        if(multiplier != 1)
+        {
+          multiplier =1;
+        }
       }
     }
-    /*
-     * 1 2 1 2 4 2 1 2 1
-     */
-    CPainting.mMatriceConv9[0][0] = 1 / 16f;
-    CPainting.mMatriceConv9[0][1] = 2 / 16f;
-    CPainting.mMatriceConv9[0][2] = 1 / 16f;
-    CPainting.mMatriceConv9[1][0] = 2 / 16f;
-    CPainting.mMatriceConv9[1][1] = 4 / 16f;
-    CPainting.mMatriceConv9[1][2] = 2 / 16f;
-    CPainting.mMatriceConv9[2][0] = 1 / 16f;
-    CPainting.mMatriceConv9[2][1] = 2 / 16f;
-    CPainting.mMatriceConv9[2][2] = 1 / 16f;
 
     // initialisation de la matrice de convolution : lissage moyen sur 25
-    // cases
-    /*
-     * 1 1 2 1 1 1 2 3 2 1 2 3 4 3 2 1 2 3 2 1 1 1 2 1 1
-     */
-    CPainting.mMatriceConv25[0][0] = 1 / 44f;
-    CPainting.mMatriceConv25[0][1] = 1 / 44f;
-    CPainting.mMatriceConv25[0][2] = 2 / 44f;
-    CPainting.mMatriceConv25[0][3] = 1 / 44f;
-    CPainting.mMatriceConv25[0][4] = 1 / 44f;
-    CPainting.mMatriceConv25[1][0] = 1 / 44f;
-    CPainting.mMatriceConv25[1][1] = 2 / 44f;
-    CPainting.mMatriceConv25[1][2] = 3 / 44f;
-    CPainting.mMatriceConv25[1][3] = 2 / 44f;
-    CPainting.mMatriceConv25[1][4] = 1 / 44f;
-    CPainting.mMatriceConv25[2][0] = 2 / 44f;
-    CPainting.mMatriceConv25[2][1] = 3 / 44f;
-    CPainting.mMatriceConv25[2][2] = 4 / 44f;
-    CPainting.mMatriceConv25[2][3] = 3 / 44f;
-    CPainting.mMatriceConv25[2][4] = 2 / 44f;
-    CPainting.mMatriceConv25[3][0] = 1 / 44f;
-    CPainting.mMatriceConv25[3][1] = 2 / 44f;
-    CPainting.mMatriceConv25[3][2] = 3 / 44f;
-    CPainting.mMatriceConv25[3][3] = 2 / 44f;
-    CPainting.mMatriceConv25[3][4] = 1 / 44f;
-    CPainting.mMatriceConv25[4][0] = 1 / 44f;
-    CPainting.mMatriceConv25[4][1] = 1 / 44f;
-    CPainting.mMatriceConv25[4][2] = 2 / 44f;
-    CPainting.mMatriceConv25[4][3] = 1 / 44f;
-    CPainting.mMatriceConv25[4][4] = 1 / 44f;
+    float factorConv25 = 1 / 44f;
+    for (int iteratorx = 0; iteratorx < 5; iteratorx++) {
+      for (int iteratory = 0; iteratory < 5; iteratory++) {
+        int minDistanceX = Math.min(iteratorx, 4 - iteratorx);
+        int minDistanceY = Math.min(iteratory, 4 - iteratory);
+        int minDistance = Math.min(minDistanceX, minDistanceY);
+        CPainting.mMatriceConv25[iteratorx][iteratory] = factorConv25 * (minDistance + 1);
+      }
+    }
 
     // initialisation de la matrice de convolution : lissage moyen sur 49
     // cases
