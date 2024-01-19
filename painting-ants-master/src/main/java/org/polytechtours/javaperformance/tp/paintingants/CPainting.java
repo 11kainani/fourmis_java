@@ -145,6 +145,20 @@ public class CPainting extends Canvas implements MouseListener {
 
     // initialisation de la matrice de convolution : lissage moyen sur 9
     // cases
+    float factorConv9 = 1 / 16f;
+    int multiplier = 1;
+    for(int interatorx = 0 ; interatorx<3; interatorx++)
+    {
+      for(int interatory = 0 ; interatory<3; interatory++)
+      {
+        multiplier =  interatorx == 1 ? multiplier * 2 : multiplier;
+        multiplier =  interatory == 1 ? multiplier * 2 : multiplier;
+
+        CPainting.mMatriceConv9[interatorx][interatory] = factorConv9 * multiplier;
+
+        multiplier =1;
+      }
+    }
     /*
      * 1 2 1 2 4 2 1 2 1
      */
